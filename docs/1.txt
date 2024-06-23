@@ -1,0 +1,94 @@
+python --version
+pip --version
+
+pip install fastapi
+pip install uvicorn
+
+python -m venv venv
+source venv/bin/activate
+
+uvicorn main:app --reload
+
+
+pip install fastapi uvicorn sqlalchemy pymysql
+
+/////////////
+DATABASE_URL:
+
+mysql+pymysql://user:password@localhost/dbname
+user, password, localhost, dbname をそれぞれ自分のMySQLの設定に置き換えてください。
+Itemモデル:
+
+Itemテーブルには id, param1, param2, param3, name の5つのカラムがあります。
+read_Items関数:
+
+クエリパラメータとして3つの実数値（param1, param2, param3）を受け取り、それらを用いてデータベース内のアイテムを検索します。
+create_Item関数:
+
+テスト用に新しいアイテムをデータベースに追加するエンドポイントです。
+uvicornの起動:
+
+if __name__ == "__main__" 以下の部分は、スクリプトを直接実行した際にUvicornサーバーを起動します。
+このコードを実行すると、Swagger UIがhttp://127.0.0.1:8000/docsに表示され、そこでAPIをテストできます。MySQLデータベースに接続し、パラメータに基づいた検索結果を取得して表示することができます。
+
+////////////////////
+
+CREATE DATABASE your_database_name;
+
+
+////////////////////
+
+
+MySQLで、`id`, `param1`, `param2`, `param3`, `name` の5つのカラムを持つテーブルを作成するSQL文は以下の通りです。
+
+```sql
+CREATE TABLE Items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    param1 FLOAT NOT NULL,
+    param2 FLOAT NOT NULL,
+    param3 FLOAT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    INDEX idx_param1 (param1),
+    INDEX idx_param2 (param2),
+    INDEX idx_param3 (param3)
+);
+```
+
+### 説明
+
+- `CREATE TABLE Items`: `Items` という名前のテーブルを作成します。
+- `id INT AUTO_INCREMENT PRIMARY KEY`: `id` は整数型で、自動増分し、プライマリキーとして設定します。
+- `param1 FLOAT NOT NULL`: `param1` は浮動小数点型で、NULLを許可しません。
+- `param2 FLOAT NOT NULL`: `param2` は浮動小数点型で、NULLを許可しません。
+- `param3 FLOAT NOT NULL`: `param3` は浮動小数点型で、NULLを許可しません。
+- `name VARCHAR(255) NOT NULL`: `name` は長さ255文字までの文字列型で、NULLを許可しません。
+- `INDEX idx_param1 (param1)`: `param1` カラムにインデックスを作成します。
+- `INDEX idx_param2 (param2)`: `param2` カラムにインデックスを作成します。
+- `INDEX idx_param3 (param3)`: `param3` カラムにインデックスを作成します。
+
+このSQL文をMySQLデータベースで実行することで、指定したカラムとインデックスを持つテーブルが作成されます。
+
+### 実行方法
+
+MySQLのクライアントツール（MySQL Workbenchなど）やコマンドラインから以下のように実行できます。
+
+```bash
+mysql -u your_username -p your_database_name
+```
+
+次に、プロンプトが表示されたらパスワードを入力し、以下のSQL文を実行します。
+
+```sql
+CREATE TABLE Items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    param1 FLOAT NOT NULL,
+    param2 FLOAT NOT NULL,
+    param3 FLOAT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    INDEX idx_param1 (param1),
+    INDEX idx_param2 (param2),
+    INDEX idx_param3 (param3)
+);
+```
+
+これで、`Items` テーブルが作成されます。
