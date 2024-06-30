@@ -1,0 +1,10 @@
+yum install git
+git clone this
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+get-pip.py
+pip install uvicorn
+python3 -m venv venv
+source venv/bin/activate
+pip install uvicorn
+pip install fastapi
+uvicorn main:app --reload

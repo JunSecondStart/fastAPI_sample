@@ -1,0 +1,15 @@
+sqlite3 your_database_name.db
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    param1 float,
+    param2 float,
+    param3 float
+);
+
+
+INSERT INTO users (name, param1, param2, param3) VALUES ('Alice', 100,50,30);
+INSERT INTO users (name, param1, param2, param3) VALUES ('Bob', 250,0,60);
+
+SELECT name FROM sqlite_master WHERE type='table';
