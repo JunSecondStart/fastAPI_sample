@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Items Detail</title>
+</head>
+<body>
+    <h1>Item Detail</h1>
+	{% for items in item %}
+    <p><strong>ID:</strong> {{ items.id }}</p>
+    <p><strong>Name:</strong> {{ items.name }}</p>
+    <p><strong>Param1:</strong> {{ items.param1 }}</p>
+    <p><strong>Param2:</strong> ${{ items.param2 }}</p>
+    <p><strong>Param3:</strong> ${{ items.param3 }}</p>
+    	{% endfor %}
+    <hr>
+    <h2>JSON Data</h2>
+    <pre>{{ items | tojson }}</pre>
+</body>
+</html>
+
