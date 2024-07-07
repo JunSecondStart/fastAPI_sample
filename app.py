@@ -48,7 +48,8 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/items/", response_model=List[ItemResponse])
+# @app.get("/items/", response_model=List[ItemResponse])
+@app.get("/fastAPI_sample/items/", response_model=List[ItemResponse])
 async def read_items(id: Optional[int] = Query(None, description="Filter by id"),db: Session = Depends(get_db)):
     if id is not None:
         items = db.query(Item).filter(Item.id == id).all()
