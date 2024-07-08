@@ -58,12 +58,13 @@ async def read_items(request: Request, id: Optional[int] = Query(None, descripti
     if not items:
         raise HTTPException(status_code=404, detail="Items not found")
 
-    items_response = [ItemResponse.from_attributes(item) for item in items]
+    items_response = [ItemResponse.from_orm(item).dict() for item in items]
 
     return templates.TemplateResponse(
-        "items.html",
-        {"request": request, "items": items_response}
-    )
+            request=request,
+            name="items.html",
+            context={"items": items_response}
+        )
 
 # サーバーの起動
 if __name__ == "__main__":
