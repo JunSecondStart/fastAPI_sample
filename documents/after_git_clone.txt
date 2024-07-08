@@ -1,0 +1,54 @@
+python --version
+pip --version
+python -m venv venv
+source venv/bin/activate  仮想環境に
+pip install fastapi
+pip install uvicorn
+uvicorn app:app --reload
+yum --version
+yum install sqlite
+pip install pydantic
+pip install sqlalchemy
+yum remove httpd
+yum install nginx
+cd /etc/nginx
+vi nginx.conf
+
+初期設定の下記をコメントアウト
+# server_name
+# root
+下記をserver_nameにＩＰをセットし、コピペ
+server {
+    listen 80;
+    server_name example.com www.example.com;
+
+    location / {
+        root /var/www/html;
+        index index.html index.htm;
+    }
+#}
+
+:wq
+systemctl status nginx
+systemctl start nginx
+systemctl restart nginx もＯＫ
+systemctl status nginx
+設定したＩＰへ、ブラウザでアクセスし、表示確認
+
+fastapi用のnginxの設定を追加
+/etc/nginx/conf.d内に、fastapi.confで作成
+
+server {
+    listen 80;
+    server_name example.com;  # 自分のドメイン名に変更してください
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
