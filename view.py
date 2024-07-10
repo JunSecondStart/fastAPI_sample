@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Depends, Query, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy import create_engine, Column, Integer, Float, String
 from sqlalchemy.ext.declarative import declarative_base
@@ -8,6 +9,9 @@ from typing import List, Optional, Any
 from pydantic import BaseModel
 
 app = FastAPI()
+
+# 静的ファイルのマウント
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # テンプレートディレクトリの設定
 templates = Jinja2Templates(directory="templates")
