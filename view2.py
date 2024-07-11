@@ -10,6 +10,11 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+# グローバル変数でフラグを保持
+state = {
+    "get3_executed": False
+}
+
 # 静的ファイルのマウント
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -105,8 +110,14 @@ async def read_items(request: Request, id: Optional[int] = Query(None, descripti
 
 
 @app.get("/transfer_items/")
-def transfer_items(request: Request, id: int = Query(None, description="Filter by id"),db1: Session = Depends(get_db), db2: Session = Depends(get_db2)):
-    items = db1.query(Item).filter(Item.id == id).all()
+def transfer_items(request: Request, id: Optional[int] = Query(None, description="Filter by id"), db1: Session = Depends(get_db), db2: Session = Depends(get_db2)):
+    if not state["get3_executed"]:
+        raise HTTPException(status_code=403, detail="GET 3 must be executed before GET 2")
+    else:
+        if id is not None:
+            items = db1.query(Item).filter(Item.id == id).all()
+        else:
+            items = db1.query(Item).all()
 
     if not items:
         raise HTTPException(status_code=404, detail="Items not found")
@@ -120,6 +131,9 @@ def transfer_items(request: Request, id: int = Query(None, description="Filter b
         )
         db2.add(db_item)
     db2.commit()
+    
+    state["get3_executed"] = False
+    
     return {"message": "Items transferred successfully"}
 
 
@@ -135,11 +149,23 @@ async def read_data(request: Request, id: Optional[int] = Query(None, descriptio
 
     datas_response = [DataResponse.from_orm(data).dict() for data in datas]
 
+    state["get3_executed"] = True
+
     return templates.TemplateResponse(
             request=request,
             name="data.html",
             context={"datas": datas_response}
         )
+
+# フラグをリセットするエンドポイント（開発用）
+@app.get("/reset")
+def reset_state():
+    state["get3_executed"] = False
+    return {"message": "State has been reset"}
+
+
+
+
 
 
 
