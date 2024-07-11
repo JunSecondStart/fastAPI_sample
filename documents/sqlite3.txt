@@ -8,8 +8,22 @@ CREATE TABLE users (
     param3 float
 );
 
+CREATE TABLE data (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    param1 float,
+    param2 float,
+    param3 float
+);
 
 INSERT INTO users (name, param1, param2, param3) VALUES ('Alice', 100,50,30);
 INSERT INTO users (name, param1, param2, param3) VALUES ('Bob', 250,0,60);
+
+INSERT INTO data (name, param1, param2, param3) VALUES ('Take', 150,100,30);
+SELECT * FROM data WHERE name='Take';
+DELETE FROM data WHERE id = 1 ;
+.quit
+(.exit)
+
 
 SELECT name FROM sqlite_master WHERE type='table';

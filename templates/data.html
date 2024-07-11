@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Items Detail</title>
+    <link rel="stylesheet" type="text/css" href="../static/items.css"/>
+</head>
+<body>
+	<section>
+    		<h1>Data Detail</h1>
+		{% for data in datas %}
+		<div>
+    			<p><strong>ID:</strong> {{ data.id }}</p>
+    			<p><strong>Name:</strong> {{ data.name }}</p>
+    			<p><strong>Param1:</strong> {{ data.param1 }}</p>
+    			<p><strong>Param2:</strong> {{ data.param2 }}</p>
+    			<p><strong>Param3:</strong> {{ data.param3 }}</p>
+    		</div>
+    		{% endfor %}
+    		<hr>
+    		<h2>JSON Data</h2>
+    		<pre>{{ datas | tojson }}</pre>
+	</section>
+</body>
+</html>
+
